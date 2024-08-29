@@ -32,11 +32,23 @@ class ReservationTicket:
     def generate(self):
         content = f"""
         Thank you for your reservation!
-        Here are your booking data:
+        Here are you booking data:
         Name: {self.customer_name}
         Hotel name: {self.hotel.name}
         """
         return content
+
+
+class SpaReservationTicket(ReservationTicket):
+    def generate(self):
+        content = f"""
+        Thank you for your SPA reservation!
+        Here are your SPA booking data:
+        Name: {self.customer_name}
+        Hotel name: {self.hotel.name}
+        """
+        return content
+
 
 
 class CreditCard:
@@ -71,10 +83,15 @@ if hotel.available():
         if credit_card.authenticate(given_password="mypass"):
             hotel.book()
             name = input("Enter your name: ")
-            reservation_ticket = ReservationTicket(name, hotel)
+            reservation_ticket = ReservationTicket(customer_name=name, hotel_object=hotel)
+            spa_reservation = SpaReservationTicket(customer_name=name, hotel_object=hotel)
             print(reservation_ticket.generate())
+            spa_package = input("Do you want to book a spa package? ")
+            if spa_package == "yes":
+                print(spa_reservation.generate())
+
         else:
-            print("Credit card authentication failed")
+            print("Credit card authentication failed.")
     else:
         print("There was a problem with your payment")
 else:
